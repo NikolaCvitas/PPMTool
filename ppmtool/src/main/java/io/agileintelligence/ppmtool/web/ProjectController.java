@@ -2,6 +2,7 @@ package io.agileintelligence.ppmtool.web;
 
 
 import io.agileintelligence.ppmtool.domain.Project;
+import io.agileintelligence.ppmtool.services.MapValidationErrorService;
 import io.agileintelligence.ppmtool.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,18 +26,18 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
+
     @PostMapping("")
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
 
-        if(result.hasErrors()){
-            Map<String, String> errorMap = new HashMap<>();
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 
-            for(FieldError error : result.getFieldErrors()){
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-
-            return  new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
+        if(errorMap != null){
+            return errorMap;
         }
+
         Project project1 = projectService.saveOrUpdateProject(project);
         return new ResponseEntity<Project>(project, HttpStatus.CREATED);
     }
