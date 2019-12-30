@@ -2,6 +2,6 @@ import React, { Component } from "react";
 
 export default class Dashborad extends Component {
   render() {
-    return <div></div>;
+    return <h1>Welcome to the Dashborad.</h1>;
   }
 }
