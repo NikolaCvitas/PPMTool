@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 import ProjectItem from "./Project/ProjectItem";
 import CreateProjectButton from "./Project/CreateProjectButton";
+import { connect } from "react-redux";
+import { getProjects } from "../actions/projectActions";
+import PropTypes from "prop-types";
 
-export default class Dashborad extends Component {
+class Dashboard extends Component {
+  componentDidMount() {
+    this.props.getProjects();
+  }
+
   render() {
     return (
       <div className="projects">
@@ -12,7 +19,7 @@ export default class Dashborad extends Component {
               <h1 className="display-4 text-center">Projects</h1>
               <br />
 
-              <CreateProjectButton></CreateProjectButton>
+              <CreateProjectButton />
               <br />
               <hr />
               <ProjectItem />
@@ -23,3 +30,14 @@ export default class Dashborad extends Component {
     );
   }
 }
+
+Dashboard.propTypes = {
+  getProjects: PropTypes.func.isRequired,
+  project: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  project: state.projects,
+});
+
+export default connect(mapStateToProps, { getProjects })(Dashboard);
