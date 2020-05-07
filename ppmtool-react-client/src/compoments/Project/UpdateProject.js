@@ -81,11 +81,6 @@ class UpdateProject extends Component {
     return (
       <div className="project">
         <div className="container">
-          <DatePicker
-            selected={this.state.startDate}
-            onChange={this.handleChange}
-          />
-
           <div className="row">
             <div className="col-md-8 m-auto">
               <h5 className="display-4 text-center">Update Project form</h5>
@@ -127,7 +122,9 @@ class UpdateProject extends Component {
                     type="date"
                     className="form-control form-control-lg"
                     name="start_date"
-                    value={moment(this.state.start_date).format("mm/dd/yyyy")}
+                    value={moment(new Date(this.state.start_date)).format(
+                      "YYYY-MM-DD"
+                    )}
                     onChange={this.onChange}
                   />
                 </div>
@@ -137,7 +134,9 @@ class UpdateProject extends Component {
                     type="date"
                     className="form-control form-control-lg"
                     name="end_date"
-                    value={this.state.end_date}
+                    value={moment(new Date(this.state.end_date)).format(
+                      "YYYY-MM-DD"
+                    )}
                     onChange={this.onChange}
                   />
                 </div>
