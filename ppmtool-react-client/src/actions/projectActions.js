@@ -5,6 +5,12 @@ export const createProject = (project, history) => async (dispatch) => {
   try {
     const res = await axios.post("http://localhost:8080/api/project", project);
     history.push("/dashboard");
+
+    // bug fix, every time when we create project wipe out error data
+    dispatch({
+      type: GET_ERRORS,
+      payload: {},
+    });
   } catch (err) {
     dispatch({
       type: GET_ERRORS,
