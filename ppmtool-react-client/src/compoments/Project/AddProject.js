@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createProject } from "../../actions/projectActions";
 import classnames from "classnames";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 
 class AddProject extends Component {
   constructor() {
@@ -43,6 +45,13 @@ class AddProject extends Component {
     };
     this.props.createProject(newProject, this.props.history);
   }
+
+  //datepicker test
+  handleChange = (date) => {
+    this.setState({
+      start_date: this.state.start_date,
+    });
+  };
 
   render() {
     const { errors } = this.state;

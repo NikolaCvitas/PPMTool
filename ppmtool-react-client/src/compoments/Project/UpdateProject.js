@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import DatePicker from "react-datepicker";
+import moment from "moment";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -84,6 +85,7 @@ class UpdateProject extends Component {
             selected={this.state.startDate}
             onChange={this.handleChange}
           />
+
           <div className="row">
             <div className="col-md-8 m-auto">
               <h5 className="display-4 text-center">Update Project form</h5>
@@ -125,7 +127,7 @@ class UpdateProject extends Component {
                     type="date"
                     className="form-control form-control-lg"
                     name="start_date"
-                    value={this.state.start_date}
+                    value={moment(this.state.start_date).format("mm/dd/yyyy")}
                     onChange={this.onChange}
                   />
                 </div>
