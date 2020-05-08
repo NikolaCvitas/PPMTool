@@ -15,6 +15,7 @@ public class ProjectTask {
     @Column (updatable = false)
     private String projectSequence;
     @NotBlank(message = "Please include a project summary")
+    private String summary;
     private String acceptanceCriteria;
     private String status;
     private Integer priority;
@@ -124,11 +125,20 @@ public class ProjectTask {
         this.backlog = backlog;
     }
 
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
     @Override
     public String toString() {
         return "ProjectTask{" +
                 "id=" + id +
                 ", projectSequence='" + projectSequence + '\'' +
+                ", summary='" + summary + '\'' +
                 ", acceptanceCriteria='" + acceptanceCriteria + '\'' +
                 ", status='" + status + '\'' +
                 ", priority=" + priority +
