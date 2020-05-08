@@ -30,8 +30,9 @@ public class ProjectTaskService {
         backlogSequence++;
 
         projectTask.setProjectSequence(projectIdentifier+"-"+backlogSequence);
-        projectTask.setProjectIdentifer(projectIdentifier);
+        projectTask.setProjectIdentifier(projectIdentifier);
 
+        backlog.setPTSequence(backlogSequence);
 
         //INITIAL priority when priority is null, refactor to enums
         if(projectTask.getPriority() == null ){
