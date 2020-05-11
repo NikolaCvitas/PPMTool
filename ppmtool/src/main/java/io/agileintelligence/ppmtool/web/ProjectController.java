@@ -4,25 +4,23 @@ package io.agileintelligence.ppmtool.web;
 import io.agileintelligence.ppmtool.domain.Project;
 import io.agileintelligence.ppmtool.services.MapValidationErrorService;
 import io.agileintelligence.ppmtool.services.ProjectService;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/project")
 @CrossOrigin
 public class ProjectController {
-
-    private static Logger log = LoggerFactory.getLogger(ProjectController.class);
 
     @Autowired
     private ProjectService projectService;
@@ -30,28 +28,17 @@ public class ProjectController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
-    @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
 
-        log.debug(project.toString());
+    @PostMapping("")
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal){
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if(errorMap!=null) return errorMap;
 
-        if(errorMap != null){
-            log.debug("errorMap: "+errorMap.toString());
-            return errorMap;
-        }
-
-        Project project1 = projectService.saveOrUpdateProject(project);
-
-        return new ResponseEntity<Project>(project, HttpStatus.CREATED);
+        Project project1 = projectService.saveOrUpdateProject(project, principal.getName());
+        return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
     }
 
-
-    @GetMapping("/all")
-    public  List<Project> findAll(){
-       return (List<Project>) projectService.findAll();
-    }
 
     @GetMapping("/{projectId}")
     public ResponseEntity<?> getProjectById(@PathVariable String projectId){
@@ -61,14 +48,15 @@ public class ProjectController {
         return new ResponseEntity<Project>(project, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{projectId}")
-    public ResponseEntity<String> deleteProjectByIdentifier(@PathVariable String projectId){
 
+    @GetMapping("/all")
+    public Iterable<Project> getAllProjects(){return projectService.findAllProjects();}
+
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<?> deleteProject(@PathVariable String projectId){
         projectService.deleteProjectByIdentifier(projectId);
 
-        return new ResponseEntity<String>("Project with Id "+projectId+ " is deleted.", HttpStatus.OK);
+        return new ResponseEntity<String>("Project with ID: '"+projectId+"' was deleted", HttpStatus.OK);
     }
-
-
-
 }
