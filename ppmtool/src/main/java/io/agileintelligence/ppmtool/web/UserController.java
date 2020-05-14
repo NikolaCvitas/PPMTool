@@ -7,6 +7,9 @@ import io.agileintelligence.ppmtool.security.JwtTokenProvider;
 import io.agileintelligence.ppmtool.services.MapValidationErrorService;
 import io.agileintelligence.ppmtool.services.UserService;
 import io.agileintelligence.ppmtool.validator.UserValidator;
+import lombok.extern.slf4j.Slf4j; 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,7 @@ import javax.validation.Valid;
 
 import static io.agileintelligence.ppmtool.security.SecurityConstants.TOKEN_PREFIX;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -43,6 +47,8 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
+
 
 
     @PostMapping("/login")
@@ -57,8 +63,11 @@ public class UserController {
                 )
         );
 
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = TOKEN_PREFIX +  tokenProvider.generateToken(authentication);
+
+        logger.debug("jwt: "+jwt);
 
         return ResponseEntity.ok(new JWTLoginSucessReponse(true, jwt));
     }
