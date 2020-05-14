@@ -7,6 +7,7 @@ import {
   updateProjectTask,
 } from "../../../actions/backlogActions";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 class UpdateProjectTask extends Component {
   constructor() {
@@ -140,7 +141,9 @@ class UpdateProjectTask extends Component {
                     type="date"
                     className="form-control form-control-lg"
                     name="dueDate"
-                    value={this.state.dueDate}
+                    value={moment(new Date(this.state.dueDate)).format(
+                      "YYYY-MM-DD"
+                    )}
                     onChange={this.onChange}
                   />
                 </div>
