@@ -31,6 +31,13 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  componentWillReceiveProps(nextProps) {
+    //if token is ok, sent to dashboard
+    if (nextProps.security.validToken) {
+      this.props.history.push("/dashboard");
+    }
+  }
+
   render() {
     return (
       <div className="login">
